@@ -20,7 +20,7 @@ var (
 		DESCENDING_ORDER: -1,
 	}
 
-	sortOrders = map[string]SortingOptions_Order{
+	sortOrders = map[SortingOrder]SortingOptions_Order{
 		ASCENDING_ORDER:  SortingOptions_ASC,
 		DESCENDING_ORDER: SortingOptions_DESC,
 	}
@@ -41,7 +41,7 @@ type SortOptions struct {
 	Order SortingOrder
 }
 
-func ToPbSortOrder(order string) (SortingOptions_Order, error) {
+func ToPbSortOrder(order SortingOrder) (SortingOptions_Order, error) {
 	val, ok := sortOrders[order]
 	if !ok {
 		return 0, errors.New("invalid order param")
