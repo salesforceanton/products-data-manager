@@ -16,7 +16,7 @@ type Products interface {
 	GetSortedData(ctx context.Context, request *product_manager.ListRequest) ([]product_manager.Product, error)
 }
 
-func NewService(repos repository.Repository) *Service {
+func NewService(repos *repository.Repository) *Service {
 	return &Service{
 		Products: NewProductsService(repos.Products),
 	}

@@ -15,8 +15,8 @@ type Config struct {
 type DatabaseConfig struct {
 	Uri      string
 	Password string
-	Username string `envconfig:"DB_DATABASE_NAME"`
-	DBName   string
+	Username string
+	DBName   string `envconfig:"DB_DATABASE_NAME"`
 }
 
 const (

@@ -21,7 +21,7 @@ This is example of creation simple gRPC server which allows sync and recieve you
 Set on your `.env` file variables according with `.env.example` file
 In this example I used MongoDB which we can run with Docker Container
 
-```docker run -d -p {DB_PORT:DB_PORT} --name {LOGGERBIN_DB_DATABASE_NAME} -e MONGO_INITDB_ROOT_USERNAME={LOGGERBIN_DB_USERNAME} -e MONGO_INITDB_ROOT_PASSWORD={LOGGERBIN_DB_PASSWORD} mongo:latest```
+```docker run -d -p {DB_PORT:DB_PORT} --name {DB_DATABASE_NAME} -e MONGO_INITDB_ROOT_USERNAME={DB_USERNAME} -e MONGO_INITDB_ROOT_PASSWORD={DB_PASSWORD} mongo:latest```
 
 ### Running
 To run server use command
