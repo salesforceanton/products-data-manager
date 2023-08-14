@@ -27,8 +27,8 @@ var (
 )
 
 type Product struct {
-	Name  string  `bson:"name" json:"name"`
-	Price float64 `bson:"price" json:"price"`
+	Name  string  `bson:"name" json:"name" csv:"name"`
+	Price float64 `bson:"price" json:"price" csv:"price"`
 }
 
 type PaginOptions struct {
