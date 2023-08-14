@@ -12,3 +12,10 @@ func LogServerIssue(err error) {
 		"problem": fmt.Sprintf("Server running error: %s", err.Error()),
 	}).Error(err)
 }
+
+func LogHandlerIssue(handler string, err error) {
+	logrus.WithFields(logrus.Fields{
+		"point":   handler,
+		"problem": fmt.Sprintf("Server running error: %s", err.Error()),
+	}).Error(err)
+}

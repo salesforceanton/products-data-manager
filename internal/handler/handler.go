@@ -6,6 +6,7 @@ import (
 	"net/http/httputil"
 
 	"github.com/jszwec/csvutil"
+	"github.com/salesforceanton/products-data-manager/internal/logger"
 	"github.com/salesforceanton/products-data-manager/internal/service"
 	products_manager "github.com/salesforceanton/products-data-manager/pkg/domain"
 )
@@ -24,16 +25,19 @@ func (h *Handler) Fetch(ctx context.Context, request *products_manager.FetchRequ
 	url := request.GetUrl()
 	convertedData, err := h.getDataFromSide(url)
 	if err != nil {
+		logger.LogHandlerIssue("fetch-convertion", err)
 		return &products_manager.Empty{}, err
 	}
 
 	// Merge data from request to data in db
 	err = h.service.Products.MergeData(ctx, convertedData)
+	logger.LogHandlerIssue("fetch-merge", err)
 	return &products_manager.Empty{}, err
 }
 func (h *Handler) List(ctx context.Context, request *products_manager.ListRequest) (*products_manager.ListResponse, error) {
 	data, err := h.service.Products.GetSortedData(ctx, request)
 	if err != nil {
+		logger.LogHandlerIssue("list", err)
 		return nil, err
 	}
 	var responseData []*products_manager.ProductItem
