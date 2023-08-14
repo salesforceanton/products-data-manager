@@ -16,6 +16,6 @@ func LogServerIssue(err error) {
 func LogHandlerIssue(handler string, err error) {
 	logrus.WithFields(logrus.Fields{
 		"point":   handler,
-		"problem": fmt.Sprintf("Server running error: %s", err.Error()),
+		"problem": fmt.Sprintf("Handler error: %s", err.Error()),
 	}).Error(err)
 }

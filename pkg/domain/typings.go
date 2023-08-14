@@ -15,7 +15,7 @@ const (
 )
 
 var (
-	sortOrderMapping = map[string]int{
+	SortOrderMapping = map[SortingOrder]int{
 		ASCENDING_ORDER:  1,
 		DESCENDING_ORDER: -1,
 	}
@@ -27,8 +27,8 @@ var (
 )
 
 type Product struct {
-	Name  string  `bson:"name" json:"name" csv:"name"`
-	Price float64 `bson:"price" json:"price" csv:"price"`
+	Name  string  `bson:"name" json:"name"`
+	Price float64 `bson:"price" json:"price"`
 }
 
 type PaginOptions struct {

@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	DefaultSortOptions  = &products_manager.SortingOptions{Field: "Name", Order: products_manager.SortingOptions_ASC}
+	DefaultSortOptions  = &products_manager.SortingOptions{Field: "name", Order: products_manager.SortingOptions_ASC}
 	DefaultPaginOptions = &products_manager.PaginationOptions{Limit: 10, Offset: 0}
 )
 
@@ -60,6 +60,8 @@ func (c *ProductsManagerClient) List(paginOpts *products_manager.PaginOptions, s
 			Order: sortOrder,
 		}
 	}
+
+	fmt.Println(request)
 
 	return c.client.List(context.TODO(), &request)
 }

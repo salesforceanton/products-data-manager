@@ -45,16 +45,19 @@ func (r *ProductsRepository) MergeData(ctx context.Context, data []model.Product
 func (r *ProductsRepository) GetSortedData(ctx context.Context, paginOpts model.PaginOptions, sortOpts model.SortOptions) ([]model.Product, error) {
 	// Setup aggregation options from request
 	sortStage := bson.D{
-		{Key: "$sort", Value: bson.D{{Key: sortOpts.Field, Value: sortOpts.Order}}},
+		{Key: "$sort", Value: bson.D{{Key: sortOpts.Field, Value: model.SortOrderMapping[sortOpts.Order]}}},
 	}
 
-	paginStage := bson.D{
+	offsetStage := bson.D{
 		{Key: "$skip", Value: paginOpts.Offset},
+	}
+
+	limitStage := bson.D{
 		{Key: "$limit", Value: paginOpts.Limit},
 	}
 
 	// Retain sorted results from db and parse
-	cursor, err := r.db.Collection(PRODUCTS_COLLECTION_NAME).Aggregate(ctx, mongo.Pipeline{sortStage, paginStage})
+	cursor, err := r.db.Collection(PRODUCTS_COLLECTION_NAME).Aggregate(ctx, mongo.Pipeline{sortStage, offsetStage, limitStage})
 	if err != nil {
 		return nil, err
 	}

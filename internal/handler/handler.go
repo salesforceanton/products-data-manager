@@ -2,10 +2,10 @@ package handler
 
 import (
 	"context"
+	"encoding/csv"
 	"net/http"
-	"net/http/httputil"
+	"strconv"
 
-	"github.com/jszwec/csvutil"
 	"github.com/salesforceanton/products-data-manager/internal/logger"
 	"github.com/salesforceanton/products-data-manager/internal/service"
 	products_manager "github.com/salesforceanton/products-data-manager/pkg/domain"
@@ -31,8 +31,11 @@ func (h *Handler) Fetch(ctx context.Context, request *products_manager.FetchRequ
 
 	// Merge data from request to data in db
 	err = h.service.Products.MergeData(ctx, convertedData)
-	logger.LogHandlerIssue("fetch-merge", err)
-	return &products_manager.Empty{}, err
+	if err != nil {
+		logger.LogHandlerIssue("fetch-merge", err)
+		return &products_manager.Empty{}, err
+	}
+	return &products_manager.Empty{}, nil
 }
 func (h *Handler) List(ctx context.Context, request *products_manager.ListRequest) (*products_manager.ListResponse, error) {
 	data, err := h.service.Products.GetSortedData(ctx, request)
@@ -58,16 +61,24 @@ func (h *Handler) getDataFromSide(url string) ([]products_manager.Product, error
 	}
 	defer resp.Body.Close()
 
-	// Parse csv data into slice of Product struct
-	dump, err := httputil.DumpResponse(resp, true)
+	// Configure reader
+	reader := csv.NewReader(resp.Body)
+	reader.Comma = ';'
+	data, err := reader.ReadAll()
 	if err != nil {
 		return nil, err
 	}
 
+	// Populate structures from csv data
 	var convertedData []products_manager.Product
-	if err := csvutil.Unmarshal(dump, &convertedData); err != nil {
-		return nil, err
-	}
+	for idx, row := range data {
+		// skip header
+		if idx == 0 {
+			continue
+		}
 
+		price, _ := strconv.ParseFloat(row[1], 64)
+		convertedData = append(convertedData, products_manager.Product{Name: row[0], Price: price})
+	}
 	return convertedData, nil
 }

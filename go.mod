@@ -3,6 +3,7 @@ module github.com/salesforceanton/products-data-manager
 go 1.20
 
 require (
+	github.com/gocarina/gocsv v0.0.0-20230616125104-99d496ca653d // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/joho/godotenv v1.5.1 // indirect
