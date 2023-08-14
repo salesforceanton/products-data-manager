@@ -61,8 +61,6 @@ func (c *ProductsManagerClient) List(paginOpts *products_manager.PaginOptions, s
 		}
 	}
 
-	fmt.Println(request)
-
 	return c.client.List(context.TODO(), &request)
 }
 
