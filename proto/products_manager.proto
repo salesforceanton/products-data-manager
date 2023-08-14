@@ -4,7 +4,7 @@ package products_manager;
 
 option go_package = "./pkg/domain/products_manager";
 
-message Product {
+message ProductItem {
 	string Name = 1;
 	float Price = 2;
 }
@@ -30,7 +30,7 @@ message ListRequest {
 }
 
 message ListResponse {
-    repeated Product data = 1;
+    repeated ProductItem data = 1;
 }
 
 message FetchRequest {

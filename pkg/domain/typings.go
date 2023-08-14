@@ -1,14 +1,28 @@
 package products_manager
 
+import "errors"
+
 const (
 	ASCENDING_ORDER  = "ASC"
 	DESCENDING_ORDER = "DESC"
+)
+
+type SortingOrder string
+
+const (
+	ASC  SortingOrder = "ASC"
+	DESC SortingOrder = "DESC"
 )
 
 var (
 	sortOrderMapping = map[string]int{
 		ASCENDING_ORDER:  1,
 		DESCENDING_ORDER: -1,
+	}
+
+	sortOrders = map[string]SortingOptions_Order{
+		ASCENDING_ORDER:  SortingOptions_ASC,
+		DESCENDING_ORDER: SortingOptions_DESC,
 	}
 )
 
@@ -24,5 +38,14 @@ type PaginOptions struct {
 
 type SortOptions struct {
 	Field string
-	Order int
+	Order SortingOrder
+}
+
+func ToPbSortOrder(order string) (SortingOptions_Order, error) {
+	val, ok := sortOrders[order]
+	if !ok {
+		return 0, errors.New("invalid order param")
+	}
+
+	return val, nil
 }

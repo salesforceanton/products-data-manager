@@ -12,7 +12,7 @@ type Repository struct {
 }
 
 type Products interface {
-	MergeData(ctx context.Context, data []model.Product) ([]model.Product, error)
+	MergeData(ctx context.Context, data []model.Product) error
 	GetSortedData(ctx context.Context, paginOpts model.PaginOptions, sortOpts model.SortOptions) ([]model.Product, error)
 }
 

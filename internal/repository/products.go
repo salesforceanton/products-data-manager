@@ -22,7 +22,7 @@ func NewProductsRepository(db *mongo.Database) *ProductsRepository {
 	}
 }
 
-func (r *ProductsRepository) MergeData(ctx context.Context, data []model.Product) ([]model.Product, error) {
+func (r *ProductsRepository) MergeData(ctx context.Context, data []model.Product) error {
 	// Upsert records
 	var updetex []mongo.WriteModel
 	for _, product := range data {
@@ -36,18 +36,11 @@ func (r *ProductsRepository) MergeData(ctx context.Context, data []model.Product
 
 	opts := options.BulkWrite()
 	_, err := r.db.Collection(PRODUCTS_COLLECTION_NAME).BulkWrite(context.TODO(), updetex, opts)
-
-	// Recieve an actual Products data
-	var actualData []model.Product
-	cursor, err := r.db.Collection(PRODUCTS_COLLECTION_NAME).Find(ctx, bson.D{})
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	if err = cursor.All(ctx, &actualData); err != nil {
-		return nil, err
-	}
-	return actualData, nil
+	return nil
 }
 func (r *ProductsRepository) GetSortedData(ctx context.Context, paginOpts model.PaginOptions, sortOpts model.SortOptions) ([]model.Product, error) {
 	// Setup aggregation options from request
