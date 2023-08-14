@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package products_manager;
+
+option go_package = "./pkg/domain/products_manager";
+
+message Product {
+	string Name = 1;
+	float Price = 2;
+}
+
+message PaginationOptions {
+    int64 limit = 1;
+    int64 offset = 2;
+}
+
+message SortingOptions {
+    enum Order {
+        ASC = 0;
+        DESC = 1;
+    }
+
+    Order order = 1;
+    string field = 2;
+}
+
+message ListRequest {
+    PaginationOptions paginOpts = 1;
+    SortingOptions sortOpts = 2;
+}
+
+message ListResponse {
+    repeated Product data = 1;
+}
+
+message FetchRequest {
+    string url = 1;
+}
+
+message Empty {
+}
+
+service ProductManagerService {
+    rpc Fetch(FetchRequest) returns (Empty) {}
+    rpc List(ListRequest) returns (ListResponse) {}
+}
