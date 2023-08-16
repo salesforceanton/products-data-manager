@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  app:
+    image: products-data-manager
+    container_name: products-data-manager
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      - MONGODB_DATABASE=${DB_DATABASE_NAME}
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - ./.data/db:/data/db
+    ports:
+      - 27017:27017
